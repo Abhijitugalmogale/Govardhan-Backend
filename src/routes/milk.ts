@@ -124,7 +124,7 @@ router.post('/bulk', async (req: Request, res: Response) => {
         const uid = (req as any).user.uid;
         let totalMilkSaved = 0;
         let recordDate = records[0].date;
-        const savedRecords = [];
+        const savedRecords: any[] = [];
 
         for (const record of records) {
             const { date, cowName, cowId, morning, evening, total } = record;
