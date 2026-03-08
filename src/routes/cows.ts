@@ -9,10 +9,14 @@ router.use(authMiddleware);
 // Get all cows for user
 router.get('/', async (req, res) => {
     try {
-        const cows = await Cow.find({ uid: (req as any).user.uid }).sort({ createdAt: -1 });
+        const uid = (req as any).user.uid;
+        console.log(`Fetching cows for user: ${uid}`);
+        const cows = await Cow.find({ uid }).sort({ createdAt: -1 });
+        console.log(`Found ${cows.length} cows`);
         res.json(cows);
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Error fetching cows:', error);
+        res.status(500).json({ message: 'Server Error', error: (error as any).message });
     }
 });
 

@@ -10,10 +10,14 @@ router.use(authMiddleware);
 // Get all milk records for user
 router.get('/', async (req, res) => {
     try {
-        const records = await MilkRecord.find({ uid: (req as any).user.uid }).sort({ date: -1, createdAt: -1 });
+        const uid = (req as any).user.uid;
+        console.log(`Fetching milk records for user: ${uid}`);
+        const records = await MilkRecord.find({ uid }).sort({ date: -1, createdAt: -1 });
+        console.log(`Found ${records.length} milk records`);
         res.json(records);
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Error fetching milk records:', error);
+        res.status(500).json({ message: 'Server Error', error: (error as any).message });
     }
 });
 
